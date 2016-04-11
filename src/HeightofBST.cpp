@@ -40,17 +40,54 @@ struct node{
 	struct node *right;
 };
 
-
+int leftresult = 0, rightresult=0;
 int get_height(struct node *root){
 
-	return 0;
+	int left = 0, right = 0;
+	if (root == NULL)
+		return 0;
+	else
+	{
+		left = 1 + get_height(root->left);
+		right = 1 + get_height(root->right);
+		if (left>right)
+			return left;
+		else
+			return right;
+	}
+}
+void getLeftSubtreeSumHelper(struct node *root)
+{
+	if (root != NULL)
+	{
+		getLeftSubtreeSumHelper(root->left);
+		leftresult = leftresult + (root->data);
+		getLeftSubtreeSumHelper(root->right);
+	}
+}
+void getRightSubtreeSumHelper(struct node *root)
+{
+	if (root != NULL)
+	{
+		getRightSubtreeSumHelper(root->left);
+		rightresult = rightresult + (root->data);
+		getRightSubtreeSumHelper(root->right);
+	}
 }
 
 int get_left_subtree_sum(struct node *root){
-	return 0;
+	if (root == NULL)
+		return 0;
+	leftresult = 0;
+	getLeftSubtreeSumHelper(root->left);
+	return leftresult;
 }
 
 int get_right_subtree_sum(struct node *root){
-	return 0;
+	if (root == NULL)
+		return 0;
+	rightresult = 0;
+	getRightSubtreeSumHelper(root->right);
+	return rightresult;
 }
 
