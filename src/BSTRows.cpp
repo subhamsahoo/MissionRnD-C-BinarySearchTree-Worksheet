@@ -28,10 +28,63 @@ struct node{
 	int data;
 	struct node *right;
 };
+void totalNumberOfElements(struct node *root, int *count)
+{
+	if (root != NULL)
+	{
+		totalNumberOfElements(root->left, count);
+		(*count)++;
+		totalNumberOfElements(root->right, count);
+	}
+
+}
+
+int height(struct node *root){
+
+	int left = 0, right = 0;
+	if (root == NULL)
+		return 0;
+	else
+	{
+		left = 1 + height(root->left);
+		right = 1 + height(root->right);
+		if (left>right)
+			return left;
+		else
+			return right;
+	}
+}
+void GivenLevel(struct node* root, int level, int *arr, int *size)
+{
+	if (root == NULL)
+		return;
+	if (level == 1)
+		arr[(*size)++] = root->data;
+	else if (level > 1)
+	{
+		GivenLevel(root->right, level - 1, arr, size);
+		GivenLevel(root->left, level - 1, arr, size);
+	}
+}
+void Order(struct node* root, int *arr)
+{
+	int size = 0;
+	int h = height(root);
+	int i;
+	for (i = 1; i <= h; i++)
+		GivenLevel(root, i, arr, &size);
+}
 
 
 
 int* BSTRighttoLeftRows(struct node* root)
 {
-    return NULL;
+	if (root == NULL)
+		return NULL;
+	int count = 0;
+	totalNumberOfElements(root, &count);
+	int *arr = (int*)malloc(sizeof(int)*count);
+	Order(root, arr);
+	return arr;
+
 }

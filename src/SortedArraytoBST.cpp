@@ -33,9 +33,67 @@ struct node{
 	struct node *right;
 };
 
+void insert(struct node **head, int n)
+{
+	if (*head == NULL)
+	{
+		struct node *newnode = (struct node*)malloc(sizeof(struct node));
+		newnode->data = n;
+		newnode->left = NULL;
+		newnode->right = NULL;
+		*head = newnode;
+	}
+	else
+	{
+		if (n>(*head)->data)
+		{
+			if ((*head)->right == NULL)
+			{
+				struct node *newnode = (struct node*)malloc(sizeof(struct node));
+				newnode->data = n;
+				newnode->left = NULL;
+				newnode->right = NULL;
+				(*head)->right = newnode;
+			}
+			else
+			{
+				insert(&((*head)->right), n);
+			}
+		}
+		else if (n<(*head)->data)
+		{
+			if ((*head)->left == NULL)
+			{
+				struct node *newnode = (struct node*)malloc(sizeof(struct node));
+				newnode->data = n;
+				newnode->left = NULL;
+				newnode->right = NULL;
+				(*head)->left = newnode;
+			}
+			else{
+				insert(&((*head)->left), n);
+			}
+		}
+	}
+
+}
+
+void binarySearch(int arr[], int l, int r, struct node **head)
+{
+	if (r >= l)
+	{
+		int mid = l + (r - l) / 2;
+		insert(head, arr[mid]);
+		binarySearch(arr, l, mid - 1, head);
+		binarySearch(arr, mid + 1, r, head);
+	}
+}
 
 struct node * convert_array_to_bst(int *arr, int len){
-	
+	if (arr==NULL||len<1)
 	return NULL;
+	struct node *head = NULL;
+	binarySearch(arr,0,len-1,&head);
+	return head;
 }
 
